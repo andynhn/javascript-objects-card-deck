@@ -1,0 +1,149 @@
+<!-- By Andy Nguyen -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Deck of Cards Assignment</title>
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    <script>
+        $(document).ready(function(){
+            class Card {
+                constructor(suit, key, num) {
+                    this.suit = suit;
+                    this.key = key;
+                    this.num = num;
+                }
+                show() {
+                    console.log(`Card is the ${this.key} of ${this.suit}`);
+                    return this;
+                }
+            }
+            
+            class Deck {
+                constructor() {
+                    this.deck = [];
+                    this.shuffle();
+                    const suits = ["Hearts", "Diamonds", "Spades", "Clubs"];
+                    const nums = {"Ace": 1, "Two": 2, "Three": 3, "Four": 4, "Five": 5, "Six": 6, "Seven": 7, "Eight": 8, "Nine": 9, "Ten": 10, "Jack": 11, "Queen": 12, "King": 13};
+                    for (let i=0; i < suits.length; i++){
+                        for (let key in nums){
+                            this.deck.push(new Card(suits[i], key, nums[key]));
+                        }
+                    }
+                    return this;
+                }
+                shuffle() {
+                    for (let i=this.deck.length-1; i>0; i--){
+                        let j = Math.floor(Math.random() * (i + 1));
+                        let temp = this.deck[i];
+                        this.deck[i] = this.deck[j];
+                        this.deck[j] = temp;
+                    }
+                    return this;
+                }
+                deal() {
+                    var dealtCard = this.deck.pop();
+                    console.log(`Dealt a card. The deck has ${this.deck.length} cards left`);
+                    return dealtCard;
+                }
+                resetDeck () {
+                    this.deck = [];
+                    const suits = ["Hearts", "Diamonds", "Spades", "Clubs"];
+                    const nums = {"Ace": 1, "Two": 2, "Three": 3, "Four": 4, "Five": 5, "Six": 6, "Seven": 7, "Eight": 8, "Nine": 9, "Ten": 10, "Jack": 11, "Queen": 12, "King": 13};
+                    for (let i=0; i < suits.length; i++){
+                        for (let key in nums){
+                            this.deck.push(new Card(suits[i], key, nums[key]));
+                        }
+                    }
+                    this.shuffle();
+                    console.log("Deck reset. Cards have been shuffled.")
+                    return this;
+                }
+            }
+
+            class Player {
+                constructor(name){
+                    this.name = name;
+                    this.hand = [];
+                }
+                sayName() {
+                    console.log(`My ${this.constructor.name} name is ${this.name}!`);
+                    return this;
+                }
+                draw(deck) {
+                    this.hand.push(deck.deal().show())
+                    return this;
+                }
+                discard() {
+                    var discardedCard = this.hand.pop();
+                    console.log(`${this.name} discarded the ${discardedCard.key} of ${discardedCard.suit}`)
+                    return this;
+                }
+            }
+            //code to test functionality of the classes
+            const deck1 = new Deck();
+            deck1.shuffle().deal().show();
+            deck1.deal().show();
+            deck1.deal().show();
+            deck1.deal().show();
+            deck1.deal().show();
+            deck1.deal().show();
+            deck1.deal().show();
+            deck1.deal().show();
+            console.log(deck1.deck);
+            deck1.resetDeck();
+            console.log(deck1.deck)
+            deck1.deal().show()
+            const player1 = new Player('Andy');
+            player1.sayName();
+            player1.draw(deck1);
+            player1.discard();
+            console.log(deck1.deck);
+            player1.draw(deck1);
+            player1.draw(deck1);
+            player1.draw(deck1);
+            console.log(deck1.deck);
+            console.log(player1.hand);
+            console.log(player1.hand[0]);
+            player1.discard();
+            player1.discard();
+            player1.discard();
+            console.log(player1.hand);
+            
+        });
+    </script>
+</head>
+<body>
+    <h1>Assignment: Deck of Cards</h1>
+    <h4>Create a Card class. A card should have the following functionality:</h4>
+    <ul>
+        <li>Each Card should have a suit ("Hearts", "Clubs", "Diamonds", "Spades")</li>
+        <li>Each Card should have a string value (eg, "Ace", "Two", ...., "Queen", "King")</li>
+        <li>Each Card should have a numerical value (1-13)</li>
+        <li>Each Card should have a show method (log the card's information to the console)</li>
+    </ul>
+    <h4>Create a Deck class. A deck should have the following functionality:</h4>
+    <ul>
+        <li>The Deck should contain the 52 standard Cards</li>
+        <li>The Deck should be able to shuffle</li>
+        <li>The Deck should be able to reset</li>
+        <li>The Deck should be able to deal a random Card</li>
+        <ul>
+            <li>Deal should return the Card that was dealt and remove it from the Deck</li>
+        </ul>
+    </ul>
+    <h4>Now create a Player class. A Player should have the following functionality:</h4>
+    <ul>
+        <li>The Player should have a name</li>
+        <li>The Player should have a hand (an array of cards taken from a Deck)</li>
+        <li>The Player should be able to take a Card (use the deck.deal method)</li>
+        <li>The Player should be able to discard a Card</li>
+    </ul>
+</body>
+</html>
